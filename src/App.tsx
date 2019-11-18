@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
@@ -129,30 +129,66 @@ const AbilityTimeline: React.FC = () => {
   );
 };
 
+function useInterval(callback: () => void, delay: number) {
+  const savedCallback = useRef<typeof callback>();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      if (savedCallback.current) {
+        savedCallback.current();
+      }
+    }
+
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
 const CastBar: React.FC = () => {
   const casting = useSelector(getCasting);
-  const [castFinishTime, setCastFinishTime] = useState(0);
   const [castTimer, setCastTimer] = useState(0);
 
+  useEffect(() => {
+    if (casting) {
+      setCastTimer(0);
+    }
+
+    return () => {
+      setCastTimer(0);
+    };
+  }, [casting]);
+
+  useInterval(() => setCastTimer(prevState => prevState + 10), 10);
+
   return (
-    <div>
-      <h2>
-        {casting ? (
-          <>
-            Casting: {casting.abilityName} {castTimer} / {casting.castTime}
-            <span
-              style={{
-                background: "#fff",
-                display: "block",
-                height: "1rem",
-                width: `${(castTimer / casting.castTime) * 100}%`
-              }}
-            />
-          </>
-        ) : (
-          <>Idle</>
-        )}
-      </h2>
+    <div className="CastBar">
+      {casting ? (
+        <>
+          <span className="CastBar__spellInfo">
+            Casting: {casting.abilityName} {(castTimer / 1000).toFixed(2)} /{" "}
+            {(casting.castTime / 1000).toFixed(2)}
+          </span>
+
+          <span
+            className="CastBar__bar"
+            style={{ width: `${(castTimer / casting.castTime) * 100}%` }}
+          />
+        </>
+      ) : (
+        <>
+          <span className="CastBar__spellInfo">Idle</span>
+          <span className="CastBar__bar" />
+        </>
+      )}
     </div>
   );
 };
