@@ -41,11 +41,13 @@ interface State {
   };
 }
 
-const getCrit = (state: State) => state.attributes[Attribute.CRITICAL_HIT];
-const getHaste = (state: State) => state.attributes[Attribute.HASTE];
-const getInt = (state: State) => state.attributes[Attribute.INTELLECT];
-const getMastery = (state: State) => state.attributes[Attribute.MASTERY];
-const getVers = (state: State) => state.attributes[Attribute.VERSATILITY];
+export const getCrit = (state: State) =>
+  state.attributes[Attribute.CRITICAL_HIT];
+export const getHaste = (state: State) => state.attributes[Attribute.HASTE];
+export const getInt = (state: State) => state.attributes[Attribute.INTELLECT];
+export const getMastery = (state: State) => state.attributes[Attribute.MASTERY];
+export const getVers = (state: State) =>
+  state.attributes[Attribute.VERSATILITY];
 const getArcaneCharges = (state: State) =>
   state.resources[Resource.ARCANE_CHARGES];
 const getMana = (state: State) => state.resources[Resource.MANA];
@@ -104,6 +106,15 @@ const setResourceValue = (resource: Resource, value: number) => ({
   }
 });
 
+export const setAttributeValue = (attribute: Attribute, value: number) => ({
+  type: "SET_ATTRIBUTE_VALUE" as const,
+  payload: {
+    timestamp: Date.now(),
+    attribute,
+    value
+  }
+});
+
 const triggerDamage = (abilityName: string, value: number) => ({
   type: "SPELL_DAMAGE" as const,
   payload: {
@@ -140,12 +151,13 @@ const defaultState: State = {
 };
 
 type Action = ReturnType<
-  | typeof updateGcdLock
-  | typeof spellCastStart
-  | typeof spellCastFailed
-  | typeof spellCastSuccess
+  | typeof setAttributeValue
   | typeof setResourceValue
+  | typeof spellCastFailed
+  | typeof spellCastStart
+  | typeof spellCastSuccess
   | typeof triggerDamage
+  | typeof updateGcdLock
 >;
 
 export const rootReducer: Reducer<State, Action> = (
@@ -182,6 +194,19 @@ export const rootReducer: Reducer<State, Action> = (
             ...state.resources[action.payload.resource],
             current: action.payload.value
           }
+        }
+      };
+
+    case "SET_ATTRIBUTE_VALUE":
+      if (!(action.payload.attribute in state.attributes)) {
+        return state;
+      }
+
+      return {
+        ...state,
+        attributes: {
+          ...state.attributes,
+          [action.payload.attribute]: action.payload.value
         }
       };
 
