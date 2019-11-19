@@ -3,6 +3,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { all, fork } from "redux-saga/effects";
+import "./App.css";
 import { Resource } from "./enum";
 import { Settings } from "./Settings";
 import { State } from "./store";
@@ -11,7 +12,6 @@ import { rootReducer } from "./store/reducers";
 import { castWatcher, globalCooldown, manaRegen } from "./store/sagas";
 import { getCasting } from "./store/selectors";
 import { useInterval } from "./useInterval";
-import "./App.css";
 
 const sagaMiddleware = createSagaMiddleware();
 

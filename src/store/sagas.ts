@@ -1,5 +1,5 @@
-import { delay, fork, put, select, take } from 'redux-saga/effects'
-import { Resource } from '../enum'
+import { delay, fork, put, select, take } from "redux-saga/effects";
+import { Resource } from "../enum";
 import {
   setResourceValue,
   spellCastFailed,
@@ -8,7 +8,7 @@ import {
   triggerDamage,
   triggerGcd,
   updateGcdLock
-} from './actions'
+} from "./actions";
 import {
   getArcaneCharges,
   getCasting,
@@ -19,14 +19,14 @@ import {
   getMastery,
   getVers,
   hasArcanePower
-} from './selectors'
+} from "./selectors";
 
 const MANA_MAX = 100000;
 const BASE_MANA_REGEN = 2000;
 
 export function* manaRegen() {
   while (true) {
-    yield delay(1000);
+    yield delay(10);
 
     const mana = yield select(getMana);
     const mastery = yield select(getMastery);
@@ -35,7 +35,10 @@ export function* manaRegen() {
       yield put(
         setResourceValue(
           Resource.MANA,
-          Math.min(mana.current + BASE_MANA_REGEN * (1 + mastery), mana.max)
+          Math.min(
+            mana.current + (BASE_MANA_REGEN * (1 + 0.2 * mastery)) / 100,
+            mana.max
+          )
         )
       );
     }

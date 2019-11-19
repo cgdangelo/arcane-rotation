@@ -73,7 +73,6 @@
   background: darkblue;
   display: block;
   height: 1rem;
-  transition: width 200ms ease-in;
 }
 
 .CastBar {
