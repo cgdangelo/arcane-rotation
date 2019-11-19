@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Attribute } from './enum'
-import { setAttributeValue } from "./store/actions";
+import { Attribute } from "./enum";
 import "./Settings.css";
+import { setAttributeValue } from "./store/actions";
 import { getCrit, getHaste, getMastery, getVers } from "./store/selectors";
 
 export const Settings: React.FC = () => {

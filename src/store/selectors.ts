@@ -1,5 +1,5 @@
-import { Attribute, Resource } from "../enum";
 import { State } from ".";
+import { Attribute, Resource } from "../enum";
 
 export const getCrit = (state: State) =>
   state.attributes[Attribute.CRITICAL_HIT];

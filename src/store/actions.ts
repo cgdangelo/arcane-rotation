@@ -1,4 +1,4 @@
-import { Attribute, Resource } from '../enum'
+import { Attribute, Resource } from "../enum";
 
 export const castAttempt = (abilityName: string) => ({
   type: "CAST_ATTEMPT" as const,

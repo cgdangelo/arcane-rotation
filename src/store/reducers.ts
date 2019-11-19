@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from "redux";
-import { Attribute, Resource } from '../enum'
+import { Attribute, Resource } from "../enum";
 import {
   setAttributeValue,
   setResourceValue,
