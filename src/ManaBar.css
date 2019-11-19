@@ -1,0 +1,9 @@
+.ManaBar {
+  background: grey;
+}
+
+.ManaBar__Bar {
+  background: darkblue;
+  display: block;
+  height: 1rem;
+}

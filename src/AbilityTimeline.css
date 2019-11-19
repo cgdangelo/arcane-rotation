@@ -1,0 +1,12 @@
+.AbilityTimeline {
+  bottom: 0;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  height: 25vh;
+  left: 0;
+  margin: 0;
+  overflow: auto;
+  position: absolute;
+  text-align: left;
+  width: 15vw;
+}

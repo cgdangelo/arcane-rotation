@@ -1,0 +1,23 @@
+.CastBar {
+  background: grey;
+  display: grid;
+  font-size: 1.5rem;
+  font-weight: bold;
+  grid-auto-rows: 1fr 1fr;
+  overflow: hidden;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.CastBar__SpellInfo {
+  color: black;
+  z-index: 2;
+}
+
+.CastBar__Bar {
+  background: white;
+  display: block;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
