@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { delay, fork, put, select, take } from "redux-saga/effects";
 
 const MANA_MAX = 100000;
+const BASE_MANA_REGEN = 2000;
 
 export enum Attribute {
   CRITICAL_HIT = "crit",
@@ -200,7 +201,7 @@ export function* manaRegen() {
       yield put(
         setResourceValue(
           Resource.MANA,
-          Math.min(mana.current + 0.02 * mana.max * (1 + mastery), mana.max)
+          Math.min(mana.current + BASE_MANA_REGEN * (1 + mastery), mana.max)
         )
       );
     }
