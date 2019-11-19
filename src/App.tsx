@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
@@ -14,6 +14,7 @@ import {
   rootReducer
 } from "./sagas";
 import { Settings } from "./Settings";
+import { useInterval } from "./useInterval";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -62,9 +63,9 @@ const ArcaneCharges: React.FC = () => {
     arcaneChargeBars.push(
       <div
         key={arcaneChargeIndex}
-        className={`ArcaneCharges__charge${
+        className={`ArcaneCharges__Charge${
           arcaneChargeIndex <= arcaneCharges.current
-            ? " ArcaneCharges__charge--charged"
+            ? " ArcaneCharges__Charge--Charged"
             : ""
         }`}
       />
@@ -82,7 +83,7 @@ const ManaBar: React.FC = () => {
   return (
     <div className="ManaBar">
       <span
-        className="ManaBar__bar"
+        className="ManaBar__Bar"
         style={{ width: `${(mana.current / mana.max) * 100}%` }}
       />
     </div>
@@ -132,30 +133,6 @@ const AbilityTimeline: React.FC = () => {
   );
 };
 
-function useInterval(callback: () => void, delay: number) {
-  const savedCallback = useRef<typeof callback>();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      if (savedCallback.current) {
-        savedCallback.current();
-      }
-    }
-
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
-
 const CastBar: React.FC = () => {
   const casting = useSelector(getCasting);
   const [castTimer, setCastTimer] = useState(0);
@@ -176,20 +153,20 @@ const CastBar: React.FC = () => {
     <div className="CastBar">
       {casting ? (
         <>
-          <span className="CastBar__spellInfo">
+          <span className="CastBar__SpellInfo">
             Casting: {casting.abilityName} {(castTimer / 1000).toFixed(2)} /{" "}
             {(casting.castTime / 1000).toFixed(2)}
           </span>
 
           <span
-            className="CastBar__bar"
+            className="CastBar__Bar"
             style={{ width: `${(castTimer / casting.castTime) * 100}%` }}
           />
         </>
       ) : (
         <>
-          <span className="CastBar__spellInfo">Idle</span>
-          <span className="CastBar__bar" />
+          <span className="CastBar__SpellInfo">Idle</span>
+          <span className="CastBar__Bar" />
         </>
       )}
     </div>
