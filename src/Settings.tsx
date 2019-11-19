@@ -1,14 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Attribute,
-  getCrit,
-  getHaste,
-  getMastery,
-  getVers,
-  setAttributeValue
-} from "./sagas";
+import { Attribute } from './enum'
+import { setAttributeValue } from "./store/actions";
 import "./Settings.css";
+import { getCrit, getHaste, getMastery, getVers } from "./store/selectors";
 
 export const Settings: React.FC = () => {
   const dispatch = useDispatch();

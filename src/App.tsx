@@ -3,18 +3,15 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { all, fork } from "redux-saga/effects";
-import "./App.css";
-import {
-  castAttempt,
-  castWatcher,
-  getCasting,
-  globalCooldown,
-  manaRegen,
-  Resource,
-  rootReducer
-} from "./sagas";
+import { Resource } from "./enum";
 import { Settings } from "./Settings";
+import { State } from "./store";
+import { castAttempt } from "./store/actions";
+import { rootReducer } from "./store/reducers";
+import { castWatcher, globalCooldown, manaRegen } from "./store/sagas";
+import { getCasting } from "./store/selectors";
 import { useInterval } from "./useInterval";
+import "./App.css";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -49,8 +46,7 @@ const App: React.FC = () => {
 
 const ArcaneCharges: React.FC = () => {
   const arcaneCharges = useSelector(
-    (state: ReturnType<typeof rootReducer>) =>
-      state.resources[Resource.ARCANE_CHARGES]
+    (state: State) => state.resources[Resource.ARCANE_CHARGES]
   );
 
   const arcaneChargeBars = [];
@@ -76,9 +72,7 @@ const ArcaneCharges: React.FC = () => {
 };
 
 const ManaBar: React.FC = () => {
-  const mana = useSelector(
-    (state: ReturnType<typeof rootReducer>) => state.resources[Resource.MANA]
-  );
+  const mana = useSelector((state: State) => state.resources[Resource.MANA]);
 
   return (
     <div className="ManaBar">
@@ -117,9 +111,7 @@ const ActionBarAbility: React.FC<{ abilityName: string }> = ({
 };
 
 const AbilityTimeline: React.FC = () => {
-  const abilityTimeline = useSelector(
-    (state: ReturnType<typeof rootReducer>) => state.abilityTimeline
-  );
+  const abilityTimeline = useSelector((state: State) => state.abilityTimeline);
 
   return (
     <dl className="AbilityTimeline">
